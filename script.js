@@ -175,10 +175,54 @@ document.addEventListener("DOMContentLoaded", async () => {
                     // Kullanıcının bastığı butonu ve giden mesajı da localStorage'a kaydet
                     saveCurrentProgress();
 
+                    if (btnData.action === "later") {
+                        // Süreci durdur ve mesaj göster
+                        isPaused = true;
+                        if (currentTimeout) clearTimeout(currentTimeout);
+                        
+                        const systemMsg = document.createElement("div");
+                        systemMsg.className = "message incoming";
+                        systemMsg.textContent = "Tamam o zaman, daha sonra geldiğinde yine aynı linkten bu sayfayı açabilirsin, ben seni bekliyor olacağım.";
+                        chatMessages.appendChild(systemMsg);
+                        scrollToBottom();
+                        saveCurrentProgress();
+
+                        // "Geldim, devam edebilirsin" butonunu göster ve bunu da localStorage'a kalıcı olarak kaydet
+                        localStorage.setItem("ezgi_waiting_later", "true");
+                        renderResumeLaterButton(() => {
+                            // Devam et butonuna basıldığında
+                            localStorage.removeItem("ezgi_waiting_later");
+                            isPaused = false;
+                            if (onSelect) onSelect();
+                        });
+                        return;
+                    }
+
                     if (onSelect) onSelect();
                 });
                 actionButtonsWrapper.appendChild(btn);
             });
+            scrollToBottom();
+        }
+
+        function renderResumeLaterButton(onResume) {
+            actionButtonsWrapper.innerHTML = "";
+            const btn = document.createElement("button");
+            btn.className = "action-btn";
+            btn.textContent = "Geldim, devam edebilirsin";
+            btn.addEventListener("click", () => {
+                const userMsg = document.createElement("div");
+                userMsg.className = "message outgoing";
+                userMsg.textContent = "Geldim, devam edebilirsin";
+                chatMessages.appendChild(userMsg);
+                scrollToBottom();
+
+                actionButtonsWrapper.innerHTML = "";
+                saveCurrentProgress();
+
+                if (onResume) onResume();
+            });
+            actionButtonsWrapper.appendChild(btn);
             scrollToBottom();
         }
 
@@ -236,11 +280,23 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (confirm("Sohbeti baştan başlatmak istediğine emin misin?")) {
                 localStorage.removeItem("ezgi_chat_index");
                 localStorage.removeItem("ezgi_chat_history");
+                localStorage.removeItem("ezgi_waiting_later");
                 location.reload();
             }
         });
 
-        processNextItem();
+        // Sayfa açıldığında daha önceden "Daha sonra geleceğim" denilip denilmediğini kontrol et
+        const isWaitingLater = localStorage.getItem("ezgi_waiting_later");
+        if (isWaitingLater === "true") {
+            isPaused = true;
+            renderResumeLaterButton(() => {
+                localStorage.removeItem("ezgi_waiting_later");
+                isPaused = false;
+                processNextItem();
+            });
+        } else {
+            processNextItem();
+        }
 
     } catch (error) {
         console.error("JSON yüklenirken hata oluştu:", error);
