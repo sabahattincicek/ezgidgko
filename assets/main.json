@@ -1,0 +1,330 @@
+[
+  {
+    "type": "message",
+    "text": "Hey! Merhaba. Nasılsın. Eğer buraya geldiysen Ezgi olmalısın.",
+    "photos": [],
+    "delay": 1200,
+    "duration": 3000
+  },
+  {
+    "type": "message",
+    "text": "Bu site senin için yapıldı. Müsait olduğun bir zamanda rahat bir yere geç ve arkana yaslan. Varsa kulaklığını tak ve huzurun sessiz gürültüsüne kulak ver. Sadece 10 dakikanı alacak.",
+    "photos": [],
+    "delay": 3000,
+    "duration": 7500
+  },
+  {
+    "type": "message",
+    "text": "Musait değilsen hiç sorun değil. Ben seni burada bekliyor olacağım. Sadece daha sonra geleceğini belirtmen yeterli.",
+    "photos": [],
+    "delay": 2500,
+    "duration": 1500
+  },
+  {
+    "type": "buttons",
+    "delay": 1000,
+    "buttons": [
+      {
+        "text": "Daha sonra geleyim.",
+        "action": "later"
+      },
+      {
+        "text": "Arkama yaslandim ve hazirim.",
+        "action": "keepgoing"
+      }
+    ]
+  },
+  {
+    "type": "message",
+    "text": "Çok sevindim o zaman. Aslında ben buraya bazı hatıraları tekrardan hatırlatmaya geldim.",
+    "photos": [],
+    "delay": 2000,
+    "duration": 4500
+  },
+  {
+    "type": "message",
+    "text": "Sonuçta güzel bir arkadaşlık ve arkada kalan çok güzel anılar var. Bunların unutulması benim hiç hoşuma gitmezdi.",
+    "photos": [],
+    "delay": 2500,
+    "duration": 5500
+  },
+  {
+    "type": "message",
+    "text": "Liseyi bitirdiğinde mezuna kaldığında hiç üzülmüş müydün?",
+    "photos": [],
+    "delay": 1500,
+    "duration": 3500
+  },
+  {
+    "type": "message",
+    "text": "Peki ya ikinci kere sınava hazırlanacağını düşününce sinirlenmiş miydin.",
+    "photos": [],
+    "delay": 1000,
+    "duration": 3800
+  },
+  {
+    "type": "message",
+    "text": "Seni bilmiyorum ama onun çok üzüldüğünü veya sinirlendiğini hiç sanmıyorum. O bu konularda biraz arsızdır. Geçmişe veya geleceğe hiç bakmıyor. Delilercesine sadece o yasadığı anın tadını çıkarmaya çalışıyor. Bu konuda onu biraz kıskanmıyor değilim doğrusu.",
+    "photos": [],
+    "delay": 5000,
+    "duration": 11000
+  },
+  {
+    "type": "message",
+    "text": "Kültür dershanesini hatırlıyorsun değil mi? İşte bu çocuğun yine arsız arsız bu dershaneye kayıt olmaya giderken düşündüğü şey bu sefer daha çok çalışıp sınavı geçmek değildi. Hatta bahse girerim sıınav onun için önemli bile değildi. Onun düşündüğü tek şey yeni insanlarla tanışmak.",
+    "photos": [],
+    "delay": 5500,
+    "duration": 12500
+  },
+  {
+    "type": "message",
+    "text": "Yeni insanlar, yeni sohbetler, yeni hikayeler, yeni hayatlar...",
+    "photos": [],
+    "delay": 1500,
+    "duration": 3500
+  },
+  {
+    "type": "message",
+    "text": "Bir düşün bakalım. Sen ne hissediyordun? Aşağıda bekle butonu var. İstediğin zaman biraz düşünmen ve hislerini dinlemen için sana zaman tanıyabilirim. Butona basman yeterli.",
+    "photos": [],
+    "delay": 4000,
+    "duration": 8500
+  },
+  {
+    "type": "message",
+    "text": "O ilk haftalar... Herkes gibi etrafta neler olup bittiğini anlamaya çalışan, acaba şunu söylersem alay ederler mi düşüncesiyle dolup taşan koridorlar... Birbirleriyle tanışmaya çalışan öğrenciler... Bu çocuğun bu ortamda seni farkettiğini bile düşünmüyorum ben.",
+    "photos": [],
+    "delay": 5000,
+    "duration": 11500
+  },
+  {
+    "type": "message",
+    "text": "Tabi günler haftalar geçti. Arkadaşlıklar oturdu. Herkes birbirini tanır oldu. Ama ben çok iyi hatırlıyorum. Bu çocuk o zamanlar sınıfa ilk girdiğinde neresi boşsa oraya otururdu. Hiç kendi standart yeri yoktu. Taki sen, Azize ve Ozan'la daha fazla kaynaşana kadar.",
+    "photos": [],
+    "delay": 5500,
+    "duration": 12000
+  },
+  {
+    "type": "message",
+    "text": "Daha fazla konuşur oldunuz; daha fazla birlikte vakit geçirir oldunuz. Hatta sözde çalışmak için gittiğiniz o kütüphanede çalışmak dışında her şeyi yaptınız. Hiç öyle bakma. Akşam otobüsünü kaçırma pahasına kütüphanede ayakta saatlerce konuştuğunuzu biliyorum.",
+    "photos": [],
+    "delay": 5000,
+    "duration": 11500
+  },
+  {
+    "type": "message",
+    "text": "Zaten okumaya diye gittiğiniz dershandede halay çekmenizi saymıyorum bile. Çiğköfteler güzel miydi bari?",
+    "photos": [],
+    "delay": 2500,
+    "duration": 5500
+  },
+  {
+    "type": "message",
+    "text": "Şuna bak şuna. Sanki sınava kendi girmeyecekmiş gibi halay çekiyor.",
+    "photos": [],
+    "delay": 1800,
+    "duration": 4000
+  },
+  {
+    "type": "message",
+    "text": "Ama her şeye rağmen o anın tadını sonuna kadar çıkarmanız o kadar çok hoşuma gitti ki.",
+    "photos": [],
+    "delay": 2500,
+    "duration": 5500
+  },
+  {
+    "type": "message",
+    "text": "Bir yandan sınava hazırlanırken bir yandan birbirlerinizle güzel vakitler geçirmekten hiç çekinmediniz.",
+    "photos": [],
+    "delay": 2200,
+    "duration": 5000
+  },
+  {
+    "type": "message",
+    "text": "Yeri geldi Ahmet Rasim'in saçını sıfıra vurmasına güldünüz. Yeri geldi arkadaşınızın kaybına üzüldünüz. Yeri geldi insanların doğum günleri sayesinde pastaları hüplettiniz. Peki ya keyfo dönerin o efsane sosu...",
+    "photos": [],
+    "delay": 4500,
+    "duration": 10000
+  },
+  {
+    "type": "message",
+    "text": "Hep masumdunuz.",
+    "photos": [],
+    "delay": 800,
+    "duration": 2000
+  },
+  {
+    "type": "message",
+    "text": "Eee sınav geldi çattı gitti. Sınav sonuçlarınız sizi ne kadar tatmin etti bilmiyorum. Orası beni ilgilendirmez. Ben sizin aranızdaki arkadaşlıkla ilgileniyorum.",
+    "photos": [],
+    "delay": 3500,
+    "duration": 8000
+  },
+  {
+    "type": "message",
+    "text": "Üniversitelere dağılmadan önce birbirinizden kopmadınız.",
+    "photos": [],
+    "delay": 1500,
+    "duration": 3500
+  },
+  {
+    "type": "message",
+    "text": "Birlikte vakit geçirdiniz.",
+    "photos": [],
+    "delay": 800,
+    "duration": 2500
+  },
+  {
+    "type": "message",
+    "text": "Birbirinizin doğum günlerini kutladınız.",
+    "photos": [],
+    "delay": 1000,
+    "duration": 3000
+  },
+  {
+    "type": "message",
+    "text": "Hatırlıyorumda sanırım 20. yaş günündü. Sana ahşaptan bir fotoğraflık yapmıştı. Doğum günü kutlamasından eve dönerken üzerine kalemle bir şey yazmıştı.",
+    "photos": [],
+    "delay": 3500,
+    "duration": 8000
+  },
+  {
+    "type": "message",
+    "text": "'Sevgine sığdırdığın bunca insana rağmen hala temizlik yapmayı sevmene hayranım.'",
+    "photos": [],
+    "delay": 2000,
+    "duration": 5000
+  },
+  {
+    "type": "message",
+    "text": "Tamam kabul ediyorum. Belki de tam olarak böyle yazmamıştı ama buna benzer bir şeydi işte.",
+    "photos": [],
+    "delay": 2500,
+    "duration": 5500
+  },
+  {
+    "type": "message",
+    "text": "Birlikte yatılı misafirliğe gittiniz. Bizim arsız annesinden babasından izin koparabilmek için kırk takla atmıştı haberin var mı? Ama sonucunda güzel bir soğuk su partisi yaptınız.",
+    "photos": [],
+    "delay": 4000,
+    "duration": 9500
+  },
+  {
+    "type": "message",
+    "text": "Hani derler ya bir kahvenin kırk yıl hatırı vardır diye. Sizin evdeyken yaptığın ve içtiğiniz kahvenin 7. yılındasınız ve bu çocuğun hala ilk günkü hatrı taşıdığından emin olabilirsin. Bir kahve canavarının böyle güzel bir kahve yapmasına şaşırmamalı zaten.",
+    "photos": [],
+    "delay": 5500,
+    "duration": 13000
+  },
+  {
+    "type": "message",
+    "text": "Aaaa böyle güzel bir arkadaşlığın bir de güzel bir doğa turu olmalıydı değil mi. Bu çocuk o günden sonra çok daha fazla böyle insanlıktan uzak sadece doğayla iç içe olan yerleri keşfetti. Onlardan en azından birini görmen lazım. Biri de Mersin'de bu arada.",
+    "photos": [],
+    "delay": 5500,
+    "duration": 13000
+  },
+  {
+    "type": "message",
+    "text": "Ve evet belki bir F1 pilotu değilsin ama güzel araba sürüyorsun.",
+    "photos": [],
+    "delay": 1800,
+    "duration": 4000
+  },
+  {
+    "type": "message",
+    "text": "Peki ya dansına ne demeli. O gün senin böyle kıvrak bir şekilde dans etmene o kadar şaşırdık ki. Sende ne cevherler varmış be.",
+    "photos": [],
+    "delay": 3000,
+    "duration": 7000
+  },
+  {
+    "type": "message",
+    "text": "O gün yine doğum günü kutladınız hatırlıyor musun? Hatta senin teyzenin evindeydik. Bu çocuk için en iyisi miydi bilmiyorum ama en anlamlı doğum günüydü bence.",
+    "photos": [],
+    "delay": 4000,
+    "duration": 9000
+  },
+  {
+    "type": "message",
+    "text": "Merak etme. Kalem güvende ve mürekkebi bitse bile hala yanında taşıyor. O kalemi ilk verdiğindeki yüzünü hatırlıyor musun bilmiyorum ama sanki hiç etkilenmemiş ya da heyecanlanmamış gibi görünüyordu.",
+    "photos": [],
+    "delay": 4500,
+    "duration": 10500
+  },
+  {
+    "type": "message",
+    "text": "Sana küçük bir sır vereyim bu çocuğun duygularını yüzüne yansıtamama hastalığı var. Bu çocuk çok fazla heyecanlandığında yüzüne değil ellerine bakacaksın. Çünkü o kalemi alırken elleri titriyordu heyecandan.",
+    "photos": [],
+    "delay": 4500,
+    "duration": 10500
+  },
+  {
+    "type": "message",
+    "text": "Tabi biliyorsun ki her yavru kuş yuvada kalamaz. Bir yerden sonra uçup gitmesi gerekir. Sen Ankara'ya bizim arsız da Kocaeli'ye uçtu. Telefonda konuştuğunuz saatler zamanla azaldı. Ama yine de aklınızdan hiç kopmak gelmedi.",
+    "photos": [],
+    "delay": 5000,
+    "duration": 11500
+  },
+  {
+    "type": "message",
+    "text": "Ve bence en önemlisi bu çocuğun atasıyla tanışmasına sen vesile oldun. İlk defa sürekli tarih kitaplarından okuduğu o adamın huzuruna çıkardın.",
+    "photos": [],
+    "delay": 3500,
+    "duration": 8000
+  },
+  {
+    "type": "message",
+    "text": "Akşamında Aspava'da yedirip yedirip şişirdin. Normalde yemeyi çok seven bu çocuk neye uğradığını şaşırdı.",
+    "photos": [],
+    "delay": 2500,
+    "duration": 6000
+  },
+  {
+    "type": "message",
+    "text": "Ama en unutulmaz anlardan biri de akşam otobüsü beklerken bi okulun bahçesinde hiç tanımadığınız o güzel insanlarla top oynamanızdı.",
+    "photos": [],
+    "delay": 3000,
+    "duration": 7500
+  },
+  {
+    "type": "message",
+    "text": "Veee tabiki senin okul bitti bizim arsız devam etti. Sen çalışmaya başladın hayata atıldın. Bizimki hiç bitmeyen okulda hayatıyla savaştı. İster istemez iletişim kopuklukları oldu.",
+    "photos": [],
+    "delay": 4500,
+    "duration": 10500
+  },
+  {
+    "type": "message",
+    "text": "Biliyorum çok uzattım. Ama burada yazmadığım ve daha aklıma bile gelmeyen onca güzel yaşanmışlıklardan sonra bu çocuğun sana söylemek istediği bazı şeyler var.",
+    "photos": [],
+    "delay": 4000,
+    "duration": 9500
+  },
+  {
+    "type": "message",
+    "text": "Okumak ister misin?",
+    "photos": [],
+    "delay": 800,
+    "duration": 2500
+  },
+  {
+    "type": "buttons",
+    "delay": 400,
+    "buttons": [
+      {
+        "text": "İsterim.",
+        "action": "readletter"
+      },
+      {
+        "text": "Çok isterim.",
+        "action": "readletter"
+      }
+    ]
+  },
+  {
+    "type": "letter",
+    "content": "Ezgi merhaba. Ben Sabahattin. Nasılsın. Bu yukarıda yazanları böyle oturup yüzyüze uzuun uzun konuşmak hatırlamak çok daha iyi olurdu. ama tabiki her zaman imkanlar istediğimiz gibi olmuyor. \n\n Bazen ara ara aklıma geliyor. Çok güzel insanlarla yani sizinle tanışmışım. Küçük bir bölümde olsa hayatımda çok güzel yer edindiniz. Hatırlamaktan ve hatırlatmaktan hiç bir zaman rahatsızlık duymaycağım insanlarsınız. Ama bugun genel konuşmak istemiyorum. Çünkü bu senin doğum günün. Kocaman yetişkin insanlar olduk. Sana güzel dileklerle dolu kısa bir doğum günü mesajı yazmaktansa senin de içinde olan bu güzel anıları tekrardan hatırlatmak istedim. Buraya daha fazla fotoğraf eklemek isterdim. Ama belliki birlikteyken fotoğraf çekilmek pek aklımıza gelmemiş. \n\n Yüzünde en ufak bir gülümseme oluşturduysam ne mutlu bana. Geçmişte doya doya görme fırsatım olduğu o doğal gülüşünü hayatından hiç bir zaman eksik etme. \n\n Ve son olarak daha önce de söyledim tekrardan söylüyorum. Seni doğurup tanıştığımız ilk günden bu yana birlikte çok güzel anılar biriktirmemize sebep olan annen ve banana çok teşekkür ediyorum. \n\n İyi ki varsın.",
+    "delay": 2000,
+    "duration": 45000
+  }
+]
