@@ -176,25 +176,35 @@ document.addEventListener("DOMContentLoaded", async () => {
                     saveCurrentProgress();
 
                     if (btnData.action === "later") {
-                        // Süreci durdur ve mesaj göster
+                        // Süreci durdur ve üç nokta göstererek mesaj ekle
                         isPaused = true;
                         if (currentTimeout) clearTimeout(currentTimeout);
                         
-                        const systemMsg = document.createElement("div");
-                        systemMsg.className = "message incoming";
-                        systemMsg.textContent = "Tamam o zaman, daha sonra geldiğinde yine aynı linkten bu sayfayı açabilirsin, ben seni bekliyor olacağım.";
-                        chatMessages.appendChild(systemMsg);
-                        scrollToBottom();
-                        saveCurrentProgress();
+                        showTypingIndicator();
+                        
+                        setTimeout(() => {
+                            hideTypingIndicator();
+                            const systemMsg = document.createElement("div");
+                            systemMsg.className = "message incoming";
+                            systemMsg.textContent = "Tamam o zaman, daha sonra geldiğinde yine aynı linkten bu sayfayı açabilirsin, ben seni bekliyor olacağım.";
+                            chatMessages.appendChild(systemMsg);
+                            scrollToBottom();
+                            
+                            // currentIndex'i bir sonraki adıma (butonlar öğesinden sonraki öğeye) taşıyalım ki
+                            // geri gelip "Geldim, devam edebilirsin" denildiğinde eski butonlar tekrar gösterilmesin!
+                            currentIndex++;
+                            saveCurrentProgress();
 
-                        // "Geldim, devam edebilirsin" butonunu göster ve bunu da localStorage'a kalıcı olarak kaydet
-                        localStorage.setItem("ezgi_waiting_later", "true");
-                        renderResumeLaterButton(() => {
-                            // Devam et butonuna basıldığında
-                            localStorage.removeItem("ezgi_waiting_later");
-                            isPaused = false;
-                            if (onSelect) onSelect();
-                        });
+                            // "Geldim, devam edebilirsin" butonunu göster ve bunu da localStorage'a kalıcı olarak kaydet
+                            localStorage.setItem("ezgi_waiting_later", "true");
+                            renderResumeLaterButton(() => {
+                                // Devam et butonuna basıldığında
+                                localStorage.removeItem("ezgi_waiting_later");
+                                isPaused = false;
+                                processNextItem();
+                            });
+                        }, 1200);
+
                         return;
                     }
 
