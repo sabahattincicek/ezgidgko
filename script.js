@@ -11,14 +11,35 @@ document.addEventListener("DOMContentLoaded", async () => {
     let autoPauseByScroll = false;
     let currentTimeout = null;
 
+    // Test modu için hızlı süre ayarı (true iken delay ve duration'lar 500ms olur)
+    const TEST_MODE = true;
+
     try {
         const response = await fetch("assets/main.json");
         const items = await response.json();
         
-        // localStorage'dan kalınan index'i ve kullanıcı seçimlerini/mesajlarını yükle
+        // localStorage'dan kalınan index'i, bitiş durumunu ve kullanıcı seçimlerini/mesajlarını yükle
         let currentIndex = 0;
         const savedIndex = localStorage.getItem("ezgi_chat_index");
         const savedHistory = localStorage.getItem("ezgi_chat_history");
+        const chatEnded = localStorage.getItem("ezgi_chat_ended");
+
+        if (chatEnded === "true") {
+            // Eğer daha önceden bitmişse (storage'da end yazıyorsa), geçmişi doğrudan bas ve baştan başlatma
+            if (savedHistory !== null) {
+                chatMessages.innerHTML = savedHistory;
+            } else if (savedIndex !== null) {
+                const parsed = parseInt(savedIndex, 10);
+                if (!isNaN(parsed)) {
+                    for (let i = 0; i < parsed && i < items.length; i++) {
+                        renderItemInstant(items[i]);
+                    }
+                }
+            }
+            // Butonları gizle / etkisizleştir
+            actionButtonsWrapper.innerHTML = "";
+            return;
+        }
 
         if (savedHistory !== null) {
             chatMessages.innerHTML = savedHistory;
@@ -40,6 +61,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         function saveCurrentProgress() {
             localStorage.setItem("ezgi_chat_index", currentIndex);
             localStorage.setItem("ezgi_chat_history", chatMessages.innerHTML);
+            
+            // Eğer şu anki item 'end' tipindeyse veya items[currentIndex] end ise end bayrağını kaydet
+            if (currentIndex < items.length && items[currentIndex].type === "end") {
+                localStorage.setItem("ezgi_chat_ended", "true");
+            }
         }
 
         function processNextItem() {
@@ -51,8 +77,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (item.type === "message" || item.type === "letter") {
                 showTypingIndicator();
 
-                const delay = item.delay !== undefined ? item.delay : 1000;
-                const duration = item.duration !== undefined ? item.duration : 2000;
+                const delay = TEST_MODE ? 500 : (item.delay !== undefined ? item.delay : 1000);
+                const duration = TEST_MODE ? 500 : (item.duration !== undefined ? item.duration : 2000);
 
                 currentTimeout = setTimeout(() => {
                     if (isPaused) return;
@@ -69,7 +95,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }, delay);
 
             } else if (item.type === "buttons") {
-                const delay = item.delay !== undefined ? item.delay : 1000;
+                const delay = TEST_MODE ? 500 : (item.delay !== undefined ? item.delay : 1000);
                 currentTimeout = setTimeout(() => {
                     if (isPaused) return;
                     renderButtons(item.buttons, () => {
@@ -291,6 +317,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 localStorage.removeItem("ezgi_chat_index");
                 localStorage.removeItem("ezgi_chat_history");
                 localStorage.removeItem("ezgi_waiting_later");
+                localStorage.removeItem("ezgi_chat_ended");
                 location.reload();
             }
         });
