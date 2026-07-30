@@ -10,10 +10,67 @@ document.addEventListener("DOMContentLoaded", async () => {
     let isPaused = false;
     let autoPauseByScroll = false;
     let autoPauseByVisibility = false;
+    let autoPauseByModal = false;
     let currentTimeout = null;
 
     // Test modu için hızlı süre ayarı (true iken delay ve duration'lar 500ms olur)
-    const TEST_MODE = false;
+    const TEST_MODE = true;
+
+    // Tam Ekran Medya Modal İşlevselliği
+    const mediaModal = document.getElementById("media-modal");
+    const mediaModalContentContainer = document.getElementById("media-modal-content-container");
+    const mediaModalClose = document.querySelector(".media-modal-close");
+
+    function openMediaModal(element) {
+        // Modal açıldığında sohbet akışını otomatik durdur
+        if (!isPaused) {
+            autoPauseByModal = true;
+            setPausedState(true);
+        }
+
+        mediaModalContentContainer.innerHTML = "";
+        let clonedElement;
+        if (element.tagName === "IMG") {
+            clonedElement = document.createElement("img");
+            clonedElement.src = element.src;
+            clonedElement.alt = element.alt || "Tam Ekran Görsel";
+        } else if (element.tagName === "VIDEO") {
+            clonedElement = document.createElement("video");
+            clonedElement.src = element.src;
+            clonedElement.controls = true;
+            clonedElement.autoplay = true;
+            clonedElement.playsInline = true;
+        }
+        if (clonedElement) {
+            mediaModalContentContainer.appendChild(clonedElement);
+            mediaModal.style.display = "flex";
+        }
+    }
+
+    function closeMediaModal() {
+        mediaModal.style.display = "none";
+        mediaModalContentContainer.innerHTML = "";
+
+        // Modal kapandığında eğer otomatik durdurulduysa akışı devam ettir
+        if (autoPauseByModal && isPaused) {
+            autoPauseByModal = false;
+            setPausedState(false);
+        }
+    }
+
+    mediaModalClose.addEventListener("click", closeMediaModal);
+    mediaModal.addEventListener("click", (e) => {
+        if (e.target === mediaModal) {
+            closeMediaModal();
+        }
+    });
+
+    // Sohbet içerisindeki görsellere ve videolara tıklama olayı ekleme (Event Delegation)
+    chatMessages.addEventListener("click", (e) => {
+        if (e.target.tagName === "IMG" || e.target.tagName === "VIDEO") {
+            openMediaModal(e.target);
+        }
+    });
 
     try {
         const response = await fetch("assets/main.json");
