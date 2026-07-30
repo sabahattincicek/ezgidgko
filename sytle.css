@@ -17,6 +17,7 @@ body {
 
 .chat-container {
     width: 100%;
+    max-width: 700px;
     height: 100vh;
     height: 100dvh;
     background: #ffffff;
@@ -25,13 +26,6 @@ body {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-}
-
-@media (min-width: 481px) {
-    .chat-container {
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    }
 }
 
 .chat-header {
