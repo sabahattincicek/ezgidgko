@@ -247,7 +247,8 @@ body {
     border-radius: 3px;
 }
 
-.photo-gallery img {
+.photo-gallery img,
+.photo-gallery video {
     max-height: 180px;
     width: auto;
     object-fit: contain;

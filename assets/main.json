@@ -145,6 +145,7 @@
     "type": "message",
     "text": "Şuna bak şuna. Sanki sınava kendi girmeyecekmiş gibi halay çekiyor.",
     "videos": [
+      "assets/photos/araba.mp4",
       "assets/photos/halay.mp4"
     ],
     "delay": 1800,
@@ -263,8 +264,10 @@
     "type": "message",
     "text": "Aaaa böyle güzel bir arkadaşlığın bir de güzel bir doğa turu olmalıydı değil mi. Bu çocuk o günden sonra çok daha fazla böyle insanlıktan uzak sadece doğayla iç içe olan yerleri keşfetti. Onlardan en azından birini görmen lazım. Biri de Mersin'de bu arada.",
     "photos": [
-      "assets/photos/doga_turu.mp4",
       "assets/photos/doga_turu.jpg"
+    ],
+    "videos": [
+      "assets/photos/doga_turu.mp4"
     ],
     "delay": 5500,
     "duration": 13000
@@ -273,7 +276,7 @@
     "idx": 32,
     "type": "message",
     "text": "Ve evet belki bir F1 pilotu değilsin ama güzel araba sürüyorsun.",
-    "photos": [
+    "videos": [
       "assets/photos/araba.mp4"
     ],
     "delay": 1800,
@@ -283,7 +286,7 @@
     "idx": 33,
     "type": "message",
     "text": "Peki ya dansına ne demeli. O gün senin böyle kıvrak bir şekilde dans etmene o kadar şaşırdık ki. Sende ne cevherler varmış be.",
-    "photos": [
+    "videos": [
       "assets/photos/dans.mp4"
     ],
     "delay": 3000,
@@ -303,7 +306,9 @@
     "text": "Merak etme. Kalem güvende ve mürekkebi bitse bile hala yanında taşıyor. O kalemi ilk verdiğindeki bizim çocuğun yüzünü hatırlıyor musun bilmiyorum ama sanki hiç etkilenmemiş ya da heyecanlanmamış gibi görünüyordu.",
     "photos": [
       "assets/photos/kalem_not.jpg",
-      "assets/photos/kalem_done.jpeg",
+      "assets/photos/kalem_done.jpeg"
+    ],
+    "videos": [
       "assets/photos/kalem.mp4"
     ],
     "delay": 4500,

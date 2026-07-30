@@ -125,27 +125,31 @@ document.addEventListener("DOMContentLoaded", async () => {
                 
                 let contentHtml = "";
                 
-                if (item.photos && Array.isArray(item.photos) && item.photos.length > 0) {
-                    if (item.photos.length === 1) {
-                        contentHtml += `<img src="${item.photos[0]}" alt="Hatıra" class="single-photo">`;
-                    } else {
-                        contentHtml += `<div class="photo-gallery">`;
+                let hasMultipleMedia = (
+                    (item.photos && item.photos.length > 1) ||
+                    (item.videos && item.videos.length > 1) ||
+                    ((item.photos && item.photos.length > 0) && (item.videos && item.videos.length > 0))
+                );
+
+                if (hasMultipleMedia) {
+                    contentHtml += `<div class="photo-gallery">`;
+                    if (item.photos && Array.isArray(item.photos)) {
                         item.photos.forEach(photoUrl => {
                             contentHtml += `<img src="${photoUrl}" alt="Hatıra">`;
                         });
-                        contentHtml += `</div>`;
                     }
-                }
-
-                if (item.videos && Array.isArray(item.videos) && item.videos.length > 0) {
-                    if (item.videos.length === 1) {
-                        contentHtml += `<video src="${item.videos[0]}" autoplay muted loop playsinline class="single-video"></video>`;
-                    } else {
-                        contentHtml += `<div class="video-gallery">`;
+                    if (item.videos && Array.isArray(item.videos)) {
                         item.videos.forEach(videoUrl => {
                             contentHtml += `<video src="${videoUrl}" autoplay muted loop playsinline></video>`;
                         });
-                        contentHtml += `</div>`;
+                    }
+                    contentHtml += `</div>`;
+                } else {
+                    if (item.photos && Array.isArray(item.photos) && item.photos.length === 1) {
+                        contentHtml += `<img src="${item.photos[0]}" alt="Hatıra" class="single-photo">`;
+                    }
+                    if (item.videos && Array.isArray(item.videos) && item.videos.length === 1) {
+                        contentHtml += `<video src="${item.videos[0]}" autoplay muted loop playsinline class="single-video"></video>`;
                     }
                 }
 
@@ -171,27 +175,31 @@ document.addEventListener("DOMContentLoaded", async () => {
                 
                 let contentHtml = "";
                 
-                if (item.photos && Array.isArray(item.photos) && item.photos.length > 0) {
-                    if (item.photos.length === 1) {
-                        contentHtml += `<img src="${item.photos[0]}" alt="Hatıra" class="single-photo">`;
-                    } else {
-                        contentHtml += `<div class="photo-gallery">`;
+                let hasMultipleMedia = (
+                    (item.photos && item.photos.length > 1) ||
+                    (item.videos && item.videos.length > 1) ||
+                    ((item.photos && item.photos.length > 0) && (item.videos && item.videos.length > 0))
+                );
+
+                if (hasMultipleMedia) {
+                    contentHtml += `<div class="photo-gallery">`;
+                    if (item.photos && Array.isArray(item.photos)) {
                         item.photos.forEach(photoUrl => {
                             contentHtml += `<img src="${photoUrl}" alt="Hatıra">`;
                         });
-                        contentHtml += `</div>`;
                     }
-                }
-
-                if (item.videos && Array.isArray(item.videos) && item.videos.length > 0) {
-                    if (item.videos.length === 1) {
-                        contentHtml += `<video src="${item.videos[0]}" autoplay muted loop playsinline class="single-video"></video>`;
-                    } else {
-                        contentHtml += `<div class="video-gallery">`;
+                    if (item.videos && Array.isArray(item.videos)) {
                         item.videos.forEach(videoUrl => {
                             contentHtml += `<video src="${videoUrl}" autoplay muted loop playsinline></video>`;
                         });
-                        contentHtml += `</div>`;
+                    }
+                    contentHtml += `</div>`;
+                } else {
+                    if (item.photos && Array.isArray(item.photos) && item.photos.length === 1) {
+                        contentHtml += `<img src="${item.photos[0]}" alt="Hatıra" class="single-photo">`;
+                    }
+                    if (item.videos && Array.isArray(item.videos) && item.videos.length === 1) {
+                        contentHtml += `<video src="${item.videos[0]}" autoplay muted loop playsinline class="single-video"></video>`;
                     }
                 }
 
