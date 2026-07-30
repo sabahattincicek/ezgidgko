@@ -14,7 +14,64 @@ document.addEventListener("DOMContentLoaded", async () => {
     let currentTimeout = null;
 
     // Test modu için hızlı süre ayarı (true iken delay ve duration'lar 500ms olur)
-    const TEST_MODE = true;
+    const TEST_MODE = false;
+
+    // Arka Plan Müzik Sistemi
+    const musicFiles = [
+        "assets/musics/Another Bond.mp3",
+        "assets/musics/Apocalypse (Instrumental Version).mp3",
+        "assets/musics/oneheart - this feeling.mp3",
+        "assets/musics/oneheart x reidenshi - snowfall.mp3",
+        "assets/musics/Routine.mp3",
+        "assets/musics/the end..mp3"
+    ];
+
+    function shuffleArray(array) {
+        const arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    let randomizedPlayList = shuffleArray(musicFiles);
+    let currentMusicIndex = 0;
+    const backgroundAudio = new Audio();
+    backgroundAudio.volume = 0.25; // Ambiyans için düşük ses seviyesi
+    let isMusicManuallyStopped = false;
+
+    function playCurrentMusic() {
+        if (isMusicManuallyStopped) return;
+        backgroundAudio.src = randomizedPlayList[currentMusicIndex];
+        backgroundAudio.load();
+        backgroundAudio.play().then(() => {
+            console.log("Müzik çalmaya başladı:", randomizedPlayList[currentMusicIndex]);
+        }).catch(err => {
+            console.log("Tarayıcı otomatik oynatma engeli, ilk kullanıcı etkileşimi bekleniyor...", err);
+            const startOnInteraction = () => {
+                if (!isMusicManuallyStopped) {
+                    backgroundAudio.play().catch(e => console.log("Oynatma hatası:", e));
+                }
+                document.removeEventListener("click", startOnInteraction);
+                document.removeEventListener("keydown", startOnInteraction);
+                document.removeEventListener("touchstart", startOnInteraction);
+            };
+            document.addEventListener("click", startOnInteraction, { once: true });
+            document.addEventListener("keydown", startOnInteraction, { once: true });
+            document.addEventListener("touchstart", startOnInteraction, { once: true });
+        });
+    }
+
+    backgroundAudio.addEventListener("ended", () => {
+        currentMusicIndex = (currentMusicIndex + 1) % randomizedPlayList.length;
+        if (currentMusicIndex === 0) {
+            randomizedPlayList = shuffleArray(musicFiles);
+        }
+        playCurrentMusic();
+    });
+
+    playCurrentMusic();
 
     // Tam Ekran Medya Modal İşlevselliği
     const mediaModal = document.getElementById("media-modal");
@@ -421,11 +478,23 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
 
-        // Duraklat / Devam Et buton işlevi
+        // Duraklat / Devam Et buton işlevi (Sadece bu fiziksel butona basıldığında müzik de durur/devam eder)
         pauseResumeBtn.addEventListener("click", () => {
             autoPauseByScroll = false; // Manuel müdahale
             autoPauseByVisibility = false; // Manuel müdahale
-            setPausedState(!isPaused);
+            autoPauseByModal = false; // Manuel müdahale
+            
+            const willBePaused = !isPaused;
+            setPausedState(willBePaused);
+
+            // Müzik kontrolü: Sadece bu fiziksel butona basıldığında müzik durur veya devam eder
+            if (willBePaused) {
+                backgroundAudio.pause();
+                isMusicManuallyStopped = true;
+            } else {
+                isMusicManuallyStopped = false;
+                backgroundAudio.play().catch(e => console.log("Müzik devam ettirme hatası:", e));
+            }
         });
 
         // Baştan Başlat Butonu
