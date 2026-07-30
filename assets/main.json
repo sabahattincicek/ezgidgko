@@ -144,7 +144,7 @@
     "idx": 17,
     "type": "message",
     "text": "Şuna bak şuna. Sanki sınava kendi girmeyecekmiş gibi halay çekiyor.",
-    "photos": [
+    "videos": [
       "assets/photos/halay.mp4"
     ],
     "delay": 1800,
@@ -210,7 +210,9 @@
     "idx": 25,
     "type": "message",
     "text": "Birbirinizin doğum günlerini kutladınız.",
-    "photos": [],
+    "photos": [
+      "assets/photos/dg.jpg"
+    ],
     "delay": 1000,
     "duration": 3000
   },
@@ -242,7 +244,9 @@
     "idx": 29,
     "type": "message",
     "text": "Birlikte yatılı misafirliğe gittiniz. Bizim arsız, annesinden babasından izin koparabilmek için kırk takla atmıştı haberin var mı? Ama sonucunda güzel bir soğuk su partisi yaptınız.",
-    "photos": [],
+    "photos": [
+      "assets/photos/su_partisi.jpg"
+    ],
     "delay": 4000,
     "duration": 9500
   },
@@ -258,7 +262,10 @@
     "idx": 31,
     "type": "message",
     "text": "Aaaa böyle güzel bir arkadaşlığın bir de güzel bir doğa turu olmalıydı değil mi. Bu çocuk o günden sonra çok daha fazla böyle insanlıktan uzak sadece doğayla iç içe olan yerleri keşfetti. Onlardan en azından birini görmen lazım. Biri de Mersin'de bu arada.",
-    "photos": [],
+    "photos": [
+      "assets/photos/doga_turu.mp4",
+      "assets/photos/doga_turu.jpg"
+    ],
     "delay": 5500,
     "duration": 13000
   },
@@ -266,7 +273,9 @@
     "idx": 32,
     "type": "message",
     "text": "Ve evet belki bir F1 pilotu değilsin ama güzel araba sürüyorsun.",
-    "photos": [],
+    "photos": [
+      "assets/photos/araba.mp4"
+    ],
     "delay": 1800,
     "duration": 4000
   },
@@ -274,7 +283,9 @@
     "idx": 33,
     "type": "message",
     "text": "Peki ya dansına ne demeli. O gün senin böyle kıvrak bir şekilde dans etmene o kadar şaşırdık ki. Sende ne cevherler varmış be.",
-    "photos": [],
+    "photos": [
+      "assets/photos/dans.mp4"
+    ],
     "delay": 3000,
     "duration": 7000
   },
@@ -290,7 +301,11 @@
     "idx": 35,
     "type": "message",
     "text": "Merak etme. Kalem güvende ve mürekkebi bitse bile hala yanında taşıyor. O kalemi ilk verdiğindeki bizim çocuğun yüzünü hatırlıyor musun bilmiyorum ama sanki hiç etkilenmemiş ya da heyecanlanmamış gibi görünüyordu.",
-    "photos": [],
+    "photos": [
+      "assets/photos/kalem_not.jpg",
+      "assets/photos/kalem_done.jpeg",
+      "assets/photos/kalem.mp4"
+    ],
     "delay": 4500,
     "duration": 10500
   },
@@ -306,7 +321,10 @@
     "idx": 37,
     "type": "message",
     "text": "Tabi biliyorsun ki her yavru kuş yuvada kalamaz. Bir yerden sonra uçup gitmesi gerekir. Sen Ankara'ya bizim arsız da Kocaeli'ye uçtu. Telefonda konuştuğunuz saatler zamanla azaldı. Ama yine de aklınızdan hiç kopmak gelmedi.",
-    "photos": [],
+    "photos": [
+      "assets/photos/uni.jpg",
+      "assets/photos/sabo_uni.jpg"
+    ],
     "delay": 5000,
     "duration": 11500
   },
@@ -314,7 +332,9 @@
     "idx": 38,
     "type": "message",
     "text": "Ve bence en önemlisi bu çocuğun atasıyla tanışmasına sen vesile oldun. İlk defa sürekli tarih kitaplarından okuduğu o adamın huzuruna çıkardın.",
-    "photos": [],
+    "photos": [
+      "assets/photos/anitkabir.jpg"
+    ],
     "delay": 3500,
     "duration": 8000
   },

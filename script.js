@@ -137,6 +137,18 @@ document.addEventListener("DOMContentLoaded", async () => {
                     }
                 }
 
+                if (item.videos && Array.isArray(item.videos) && item.videos.length > 0) {
+                    if (item.videos.length === 1) {
+                        contentHtml += `<video src="${item.videos[0]}" autoplay muted loop playsinline class="single-video"></video>`;
+                    } else {
+                        contentHtml += `<div class="video-gallery">`;
+                        item.videos.forEach(videoUrl => {
+                            contentHtml += `<video src="${videoUrl}" autoplay muted loop playsinline></video>`;
+                        });
+                        contentHtml += `</div>`;
+                    }
+                }
+
                 contentHtml += `<p>${item.text}</p>`;
 
                 msgDiv.innerHTML = contentHtml;
@@ -166,6 +178,18 @@ document.addEventListener("DOMContentLoaded", async () => {
                         contentHtml += `<div class="photo-gallery">`;
                         item.photos.forEach(photoUrl => {
                             contentHtml += `<img src="${photoUrl}" alt="Hatıra">`;
+                        });
+                        contentHtml += `</div>`;
+                    }
+                }
+
+                if (item.videos && Array.isArray(item.videos) && item.videos.length > 0) {
+                    if (item.videos.length === 1) {
+                        contentHtml += `<video src="${item.videos[0]}" autoplay muted loop playsinline class="single-video"></video>`;
+                    } else {
+                        contentHtml += `<div class="video-gallery">`;
+                        item.videos.forEach(videoUrl => {
+                            contentHtml += `<video src="${videoUrl}" autoplay muted loop playsinline></video>`;
                         });
                         contentHtml += `</div>`;
                     }
