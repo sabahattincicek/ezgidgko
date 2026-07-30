@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let currentTimeout = null;
 
     // Test modu için hızlı süre ayarı (true iken delay ve duration'lar 500ms olur)
-    const TEST_MODE = true;
+    const TEST_MODE = false;
 
     try {
         const response = await fetch("assets/main.json");

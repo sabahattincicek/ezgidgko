@@ -145,7 +145,6 @@
     "type": "message",
     "text": "Şuna bak şuna. Sanki sınava kendi girmeyecekmiş gibi halay çekiyor.",
     "videos": [
-      "assets/photos/araba.mp4",
       "assets/photos/halay.mp4"
     ],
     "delay": 1800,
