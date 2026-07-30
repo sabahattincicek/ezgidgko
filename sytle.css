@@ -17,7 +17,6 @@ body {
 
 .chat-container {
     width: 100%;
-    max-width: 480px;
     height: 100vh;
     height: 100dvh;
     background: #ffffff;
@@ -30,8 +29,6 @@ body {
 
 @media (min-width: 481px) {
     .chat-container {
-        height: 100hv;
-        max-height: 1058px;
         border-radius: 20px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
