@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const msgDiv = document.createElement("div");
                 msgDiv.className = "message incoming";
                 
-                let contentHtml = `<p>${item.text}</p>`;
+                let contentHtml = "";
                 
                 if (item.photos && Array.isArray(item.photos) && item.photos.length > 0) {
                     if (item.photos.length === 1) {
@@ -136,6 +136,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                         contentHtml += `</div>`;
                     }
                 }
+
+                contentHtml += `<p>${item.text}</p>`;
 
                 msgDiv.innerHTML = contentHtml;
                 chatMessages.appendChild(msgDiv);
@@ -155,7 +157,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const msgDiv = document.createElement("div");
                 msgDiv.className = "message incoming";
                 
-                let contentHtml = `<p>${item.text}</p>`;
+                let contentHtml = "";
                 
                 if (item.photos && Array.isArray(item.photos) && item.photos.length > 0) {
                     if (item.photos.length === 1) {
@@ -168,6 +170,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                         contentHtml += `</div>`;
                     }
                 }
+
+                contentHtml += `<p>${item.text}</p>`;
 
                 msgDiv.innerHTML = contentHtml;
                 chatMessages.appendChild(msgDiv);
