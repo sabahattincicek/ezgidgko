@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let isPaused = false;
     let autoPauseByScroll = false;
+    let autoPauseByVisibility = false;
     let currentTimeout = null;
 
     // Test modu için hızlı süre ayarı (true iken delay ve duration'lar 500ms olur)
@@ -305,9 +306,32 @@ document.addEventListener("DOMContentLoaded", async () => {
             lastScrollTop = currentScrollTop;
         });
 
+        // Sayfa görünürlük değişimi (Ekran kapatma, sekme değiştirme, arka plana atma)
+        document.addEventListener("visibilitychange", () => {
+            // Eğer "Daha sonra geleceğim" modundaysak veya sohbet bitmişse bu otomatik mantık karışmasın
+            if (localStorage.getItem("ezgi_waiting_later") === "true" || localStorage.getItem("ezgi_chat_ended") === "true") {
+                return;
+            }
+
+            if (document.hidden) {
+                // Sayfa arka plana geçti veya ekran kapatıldı
+                if (!isPaused) {
+                    autoPauseByVisibility = true;
+                    setPausedState(true);
+                }
+            } else {
+                // Sayfa tekrar ekrana geldi / ön plana alındı
+                if (autoPauseByVisibility && isPaused) {
+                    autoPauseByVisibility = false;
+                    setPausedState(false);
+                }
+            }
+        });
+
         // Duraklat / Devam Et buton işlevi
         pauseResumeBtn.addEventListener("click", () => {
             autoPauseByScroll = false; // Manuel müdahale
+            autoPauseByVisibility = false; // Manuel müdahale
             setPausedState(!isPaused);
         });
 
