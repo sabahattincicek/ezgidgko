@@ -83,7 +83,7 @@
     "type": "message",
     "text": "Kültür dershanesini hatırlıyorsun değil mi? İşte bu çocuğun yine arsız arsız bu dershaneye kayıt olmaya giderken düşündüğü şey bu sefer daha çok çalışıp sınavı geçmek değildi. Hatta bahse girerim sıınav onun için önemli bile değildi. Onun düşündüğü tek şey yeni insanlarla tanışmak.",
     "photos": [
-      "assets/photos/kultur.png"
+      "assets/photos/kultur.webp"
     ],
     "delay": 5500,
     "duration": 12500
@@ -125,7 +125,7 @@
     "type": "message",
     "text": "Daha fazla konuşur oldunuz; daha fazla birlikte vakit geçirir oldunuz. Hatta sözde çalışmak için gittiğiniz o kütüphanede çalışmak dışında her şeyi yaptınız. Hiç öyle bakma. Akşam otobüsünü kaçırma pahasına kütüphanede ayakta saatlerce konuştuğunuzu biliyorum.",
     "photos": [
-      "assets/photos/kutuphane.png"
+      "assets/photos/kutuphane.webp"
     ],
     "delay": 5000,
     "duration": 11500
@@ -135,7 +135,7 @@
     "type": "message",
     "text": "Zaten okumaya diye gittiğiniz dershandede halay çekmenizi saymıyorum bile. Çiğköfteler güzel miydi bari?",
     "photos": [
-      "assets/photos/kultur_cigkofte.jpg"
+      "assets/photos/kultur_cigkofte.webp"
     ],
     "delay": 2500,
     "duration": 5500
@@ -211,7 +211,7 @@
     "type": "message",
     "text": "Birbirinizin doğum günlerini kutladınız.",
     "photos": [
-      "assets/photos/dg.jpg"
+      "assets/photos/dg.webp"
     ],
     "delay": 1000,
     "duration": 3000
@@ -245,7 +245,7 @@
     "type": "message",
     "text": "Birlikte yatılı misafirliğe gittiniz. Bizim arsız, annesinden babasından izin koparabilmek için kırk takla atmıştı haberin var mı? Ama sonucunda güzel bir soğuk su partisi yaptınız.",
     "photos": [
-      "assets/photos/su_partisi.jpg"
+      "assets/photos/su_partisi.webp"
     ],
     "delay": 4000,
     "duration": 9500
@@ -263,7 +263,7 @@
     "type": "message",
     "text": "Böyle güzel bir arkadaşlığın bir de güzel bir doğa turu olmalıydı değil mi. Bu çocuk o günden sonra çok daha fazla böyle insanlıktan uzak sadece doğayla iç içe olan yerleri keşfetti. Onlardan en azından birini görmen lazım. Biri de Mersin'de bu arada.",
     "photos": [
-      "assets/photos/doga_turu.jpg"
+      "assets/photos/doga_turu.webp"
     ],
     "videos": [
       "assets/photos/doga_turu.mp4"
@@ -304,8 +304,8 @@
     "type": "message",
     "text": "Merak etme. Kalem güvende ve mürekkebi bitse bile hala yanında taşıyor. O kalemi ilk verdiğindeki bizim çocuğun yüzünü hatırlıyor musun bilmiyorum ama sanki hiç etkilenmemiş ya da heyecanlanmamış gibi görünüyordu.",
     "photos": [
-      "assets/photos/kalem_not.jpg",
-      "assets/photos/kalem_done.jpeg"
+      "assets/photos/kalem_not.webp",
+      "assets/photos/kalem_done.webp"
     ],
     "videos": [
       "assets/photos/kalem.mp4"
@@ -326,8 +326,8 @@
     "type": "message",
     "text": "Tabi biliyorsun ki her yavru kuş yuvada kalamaz. Bir yerden sonra uçup gitmesi gerekir. Sen Ankara'ya bizim arsız da Kocaeli'ye uçtu. Telefonda konuştuğunuz saatler zamanla azaldı. Ama yine de aklınızdan hiç kopmak gelmedi.",
     "photos": [
-      "assets/photos/uni.jpg",
-      "assets/photos/sabo_uni.jpg"
+      "assets/photos/uni.webp",
+      "assets/photos/sabo_uni.webp"
     ],
     "delay": 5000,
     "duration": 11500
@@ -337,7 +337,7 @@
     "type": "message",
     "text": "Ve bence en önemlisi bu çocuğun atasıyla tanışmasına sen vesile oldun. İlk defa sürekli tarih kitaplarından okuduğu o adamın huzuruna çıkardın.",
     "photos": [
-      "assets/photos/anitkabir.jpg"
+      "assets/photos/anitkabir.webp"
     ],
     "delay": 3500,
     "duration": 8000
