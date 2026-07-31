@@ -14,10 +14,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     let currentTimeout = null;
 
     // Test modu için hızlı süre ayarı (true iken delay ve duration'lar 500ms olur)
-    const TEST_MODE = true;
+    const TEST_MODE = false;
 
     // Uzun süre uzak kalma eşiği (ms cinsinden. Örn: 5 saniye = 5000)
-    const AWAY_TIMEOUT_MS = 5000;
+    const AWAY_TIMEOUT_MS = 1000*60;
 
     // Arka Plan Müzik Sistemi
     const musicFiles = [
