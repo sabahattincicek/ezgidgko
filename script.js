@@ -40,6 +40,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     const backgroundAudio = new Audio();
     backgroundAudio.volume = 0.25; // Ambiyans için düşük ses seviyesi
     let isMusicManuallyStopped = false;
+    const musicIndicator = document.getElementById("music-indicator");
+    const musicNameText = document.getElementById("music-name-text");
+
+    function getCleanMusicName(src) {
+        try {
+            const decoded = decodeURIComponent(src);
+            const fileName = decoded.split('/').pop();
+            return fileName.replace(/\.[^/.]+$/, ""); // uzantıyı kaldır
+        } catch (e) {
+            return "Müzik";
+        }
+    }
+
+    function updateMusicIndicator() {
+        if (!backgroundAudio.paused && !backgroundAudio.ended && backgroundAudio.currentTime > 0) {
+            const currentSrc = randomizedPlayList[currentMusicIndex];
+            musicNameText.textContent = getCleanMusicName(currentSrc);
+            musicIndicator.classList.add("active");
+        } else {
+            musicIndicator.classList.remove("active");
+        }
+    }
 
     function playCurrentMusic() {
         if (isMusicManuallyStopped) return;
@@ -47,11 +69,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         backgroundAudio.load();
         backgroundAudio.play().then(() => {
             console.log("Müzik çalmaya başladı:", randomizedPlayList[currentMusicIndex]);
+            updateMusicIndicator();
         }).catch(err => {
             console.log("Tarayıcı otomatik oynatma engeli, ilk kullanıcı etkileşimi bekleniyor...", err);
+            updateMusicIndicator();
             const startOnInteraction = () => {
                 if (!isMusicManuallyStopped) {
-                    backgroundAudio.play().catch(e => console.log("Oynatma hatası:", e));
+                    backgroundAudio.play().then(() => {
+                        updateMusicIndicator();
+                    }).catch(e => console.log("Oynatma hatası:", e));
                 }
                 document.removeEventListener("click", startOnInteraction);
                 document.removeEventListener("keydown", startOnInteraction);
@@ -62,6 +88,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.addEventListener("touchstart", startOnInteraction, { once: true });
         });
     }
+
+    backgroundAudio.addEventListener("play", updateMusicIndicator);
+    backgroundAudio.addEventListener("pause", updateMusicIndicator);
+    backgroundAudio.addEventListener("playing", updateMusicIndicator);
+    backgroundAudio.addEventListener("timeupdate", updateMusicIndicator);
 
     backgroundAudio.addEventListener("ended", () => {
         currentMusicIndex = (currentMusicIndex + 1) % randomizedPlayList.length;
