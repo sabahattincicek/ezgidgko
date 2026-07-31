@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const TEST_MODE = false;
 
     // Uzun süre uzak kalma eşiği (ms cinsinden. Örn: 5 saniye = 5000)
-    const AWAY_TIMEOUT_MS = 1000*60;
+    const AWAY_TIMEOUT_MS = 1000 * 60;
 
     // Arka Plan Müzik Sistemi
     const musicFiles = [
@@ -217,6 +217,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const delay = TEST_MODE ? 500 : (item.delay !== undefined ? item.delay : 1000);
                 currentTimeout = setTimeout(() => {
                     if (isPaused) return;
+                    hideTypingIndicator(); // Butonlar gösterilirken üç nokta kapatılıyor
                     renderButtons(item.buttons, () => {
                         currentIndex++;
                         saveCurrentProgress();
@@ -224,6 +225,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     });
                 }, delay);
             } else if (item.type === "end") {
+                hideTypingIndicator();
                 currentIndex++;
                 saveCurrentProgress();
                 processNextItem();
@@ -239,7 +241,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         function hideTypingIndicator() {
-            if (typingIndicator) typingIndicator.style.display = "none";
+            if (typingIndicator) {
+                typingIndicator.style.display = "none";
+            }
         }
 
         function renderItem(item) {
@@ -356,26 +360,23 @@ document.addEventListener("DOMContentLoaded", async () => {
                         isPaused = true;
                         if (currentTimeout) clearTimeout(currentTimeout);
                         
-                        showTypingIndicator();
+                        // Bekleme durumlarında üç nokta efektini anında kapat
+                        hideTypingIndicator();
                         
-                        setTimeout(() => {
-                            hideTypingIndicator();
-                            const systemMsg = document.createElement("div");
-                            systemMsg.className = "message incoming";
-                            systemMsg.textContent = "Tamam o zaman, daha sonra geldiğinde yine aynı linkten bu sayfayı açabilirsin, ben seni bekliyor olacağım.";
-                            chatMessages.appendChild(systemMsg);
-                            scrollToBottom();
-                            
-                            // Not: currentIndex artırılmıyor, dinamik sistem mesajıdır.
-                            saveCurrentProgress();
+                        const systemMsg = document.createElement("div");
+                        systemMsg.className = "message incoming";
+                        systemMsg.textContent = "Tamam o zaman, daha sonra geldiğinde yine aynı linkten bu sayfayı açabilirsin, ben seni bekliyor olacağım.";
+                        chatMessages.appendChild(systemMsg);
+                        scrollToBottom();
+                        
+                        saveCurrentProgress();
 
-                            localStorage.setItem("ezgi_waiting_later", "true");
-                            renderResumeLaterButton(() => {
-                                localStorage.removeItem("ezgi_waiting_later");
-                                isPaused = false;
-                                processNextItem();
-                            });
-                        }, 1200);
+                        localStorage.setItem("ezgi_waiting_later", "true");
+                        renderResumeLaterButton(() => {
+                            localStorage.removeItem("ezgi_waiting_later");
+                            isPaused = false;
+                            processNextItem();
+                        });
 
                         return;
                     }
@@ -417,6 +418,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         function setPausedState(paused) {
             isPaused = paused;
             if (isPaused) {
+                hideTypingIndicator(); // Duraklatıldığında üç nokta efektini kesinlikle kapat
                 if (pauseIcon) pauseIcon.style.display = "none";
                 if (playIcon) playIcon.style.display = "block";
                 if (currentTimeout) {
@@ -458,27 +460,25 @@ document.addEventListener("DOMContentLoaded", async () => {
             localStorage.setItem("ezgi_leave_time", Date.now());
         }
 
-        // UZAK KALMA AKIŞI TETİKLEYİCİSİ
+        // UZAK KALMA AKIŞI TETİKLEYİCİSİ (Üç nokta animasyonu olmadan direkt mesajı basar)
         function triggerAwayFlow() {
             isPaused = true;
             if (currentTimeout) clearTimeout(currentTimeout);
 
-            showTypingIndicator();
-            setTimeout(() => {
-                hideTypingIndicator();
-                const systemMsg = document.createElement("div");
-                systemMsg.className = "message incoming";
-                systemMsg.textContent = "Sanırım bir işin çıktı. Sorun değil ben burada bekliyorum, geldiğinde haber vermen yeterli.";
-                chatMessages.appendChild(systemMsg);
-                scrollToBottom();
+            hideTypingIndicator(); // Üç noktayı kapat
 
-                renderResumeAwayButton(() => {
-                    localStorage.removeItem("ezgi_away_paused");
-                    localStorage.removeItem("ezgi_leave_time");
-                    isPaused = false;
-                    processNextItem();
-                });
-            }, 1200);
+            const systemMsg = document.createElement("div");
+            systemMsg.className = "message incoming";
+            systemMsg.textContent = "Sanırım bir işin çıktı. Sorun değil ben burada bekliyorum, geldiğinde haber vermen yeterli.";
+            chatMessages.appendChild(systemMsg);
+            scrollToBottom();
+
+            renderResumeAwayButton(() => {
+                localStorage.removeItem("ezgi_away_paused");
+                localStorage.removeItem("ezgi_leave_time");
+                isPaused = false;
+                processNextItem();
+            });
         }
 
         // Tab Görünürlüğü Değiştiğinde
@@ -489,7 +489,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     backgroundAudio.pause();
                 }
                 
-                // Tab gizlendiğinde akışı donduralım ama isPaused bayrağını uzaktayım kontrollerini engellemeyecek şekilde yönetelim
+                hideTypingIndicator(); // Sekme gizlendiğinde üç noktayı kapat
                 if (currentTimeout) clearTimeout(currentTimeout);
                 autoPauseByVisibility = true;
 
@@ -580,9 +580,44 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
 
+        function showResetModal(onConfirm) {
+            const overlay = document.createElement("div");
+            overlay.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:9999;";
+            
+            const box = document.createElement("div");
+            box.style.cssText = "background:#fff;padding:24px;border-radius:16px;max-width:320px;width:85%;text-align:center;box-shadow:0 10px 25px rgba(0,0,0,0.2);font-family:inherit;";
+            
+            const text = document.createElement("p");
+            text.style.cssText = "margin:0 0 20px 0;font-size:15px;color:#2d3748;line-height:1.4;";
+            text.textContent = "Sohbeti baştan başlatmak istediğine emin misin?";
+            
+            const btnContainer = document.createElement("div");
+            btnContainer.style.cssText = "display:flex;gap:10px;justify-content:center;";
+            
+            const cancelBtn = document.createElement("button");
+            cancelBtn.textContent = "Vazgeç";
+            cancelBtn.style.cssText = "padding:8px 16px;border:none;background:#edf2f7;color:#4a5568;border-radius:8px;cursor:pointer;font-weight:500;";
+            cancelBtn.addEventListener("click", () => document.body.removeChild(overlay));
+            
+            const confirmBtn = document.createElement("button");
+            confirmBtn.textContent = "Sıfırla";
+            confirmBtn.style.cssText = "padding:8px 16px;border:none;background:#e53e3e;color:#fff;border-radius:8px;cursor:pointer;font-weight:500;";
+            confirmBtn.addEventListener("click", () => {
+                document.body.removeChild(overlay);
+                onConfirm();
+            });
+            
+            btnContainer.appendChild(cancelBtn);
+            btnContainer.appendChild(confirmBtn);
+            box.appendChild(text);
+            box.appendChild(btnContainer);
+            overlay.appendChild(box);
+            document.body.appendChild(overlay);
+        }
+
         // Reset Butonu
         resetBtn.addEventListener("click", () => {
-            if (confirm("Sohbeti baştan başlatmak istediğine emin misin?")) {
+            showResetModal(() => {
                 localStorage.removeItem("ezgi_chat_index");
                 localStorage.removeItem("ezgi_waiting_later");
                 localStorage.removeItem("ezgi_away_paused");
@@ -591,7 +626,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 chatMessages.innerHTML = "";
                 actionButtonsWrapper.innerHTML = "";
                 location.reload();
-            }
+            });
         });
 
         // Sayfa açılışında durum kontrolleri
@@ -614,6 +649,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (isWaitingLater === "true") {
             isPaused = true;
+            hideTypingIndicator();
             renderResumeLaterButton(() => {
                 localStorage.removeItem("ezgi_waiting_later");
                 isPaused = false;
