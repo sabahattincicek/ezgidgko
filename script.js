@@ -16,6 +16,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Test modu için hızlı süre ayarı (true iken delay ve duration'lar 500ms olur)
     const TEST_MODE = true;
 
+    // Uzun süre uzak kalma eşiği (ms cinsinden. Örn: 5 saniye = 5000)
+    const AWAY_TIMEOUT_MS = 5000;
+
     // Arka Plan Müzik Sistemi
     const musicFiles = [
         "assets/musics/Another Bond.mp3",
@@ -38,7 +41,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let randomizedPlayList = shuffleArray(musicFiles);
     let currentMusicIndex = 0;
     const backgroundAudio = new Audio();
-    backgroundAudio.volume = 0.25; // Ambiyans için düşük ses seviyesi
+    backgroundAudio.volume = 0.25;
     let isMusicManuallyStopped = false;
     const musicIndicator = document.getElementById("music-indicator");
     const musicNameText = document.getElementById("music-name-text");
@@ -47,19 +50,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         try {
             const decoded = decodeURIComponent(src);
             const fileName = decoded.split('/').pop();
-            return fileName.replace(/\.[^/.]+$/, ""); // uzantıyı kaldır
+            return fileName.replace(/\.[^/.]+$/, "");
         } catch (e) {
             return "Müzik";
         }
     }
 
     function updateMusicIndicator() {
-        if (!backgroundAudio.paused && !backgroundAudio.ended && backgroundAudio.currentTime > 0) {
-            const currentSrc = randomizedPlayList[currentMusicIndex];
-            musicNameText.textContent = getCleanMusicName(currentSrc);
-            musicIndicator.classList.add("active");
-        } else {
-            musicIndicator.classList.remove("active");
+        if (musicNameText && musicIndicator) {
+            if (!backgroundAudio.paused && !backgroundAudio.ended && backgroundAudio.currentTime > 0) {
+                const currentSrc = randomizedPlayList[currentMusicIndex];
+                musicNameText.textContent = getCleanMusicName(currentSrc);
+                musicIndicator.classList.add("active");
+            } else {
+                musicIndicator.classList.remove("active");
+            }
         }
     }
 
@@ -68,10 +73,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         backgroundAudio.src = randomizedPlayList[currentMusicIndex];
         backgroundAudio.load();
         backgroundAudio.play().then(() => {
-            console.log("Müzik çalmaya başladı:", randomizedPlayList[currentMusicIndex]);
             updateMusicIndicator();
         }).catch(err => {
-            console.log("Tarayıcı otomatik oynatma engeli, ilk kullanıcı etkileşimi bekleniyor...", err);
             updateMusicIndicator();
             const startOnInteraction = () => {
                 if (!isMusicManuallyStopped) {
@@ -110,55 +113,58 @@ document.addEventListener("DOMContentLoaded", async () => {
     const mediaModalClose = document.querySelector(".media-modal-close");
 
     function openMediaModal(element) {
-        // Modal açıldığında sohbet akışını otomatik durdur
         if (!isPaused) {
             autoPauseByModal = true;
             setPausedState(true);
         }
 
-        mediaModalContentContainer.innerHTML = "";
-        let clonedElement;
-        if (element.tagName === "IMG") {
-            clonedElement = document.createElement("img");
-            clonedElement.src = element.src;
-            clonedElement.alt = element.alt || "Tam Ekran Görsel";
-        } else if (element.tagName === "VIDEO") {
-            clonedElement = document.createElement("video");
-            clonedElement.src = element.src;
-            clonedElement.controls = true;
-            clonedElement.autoplay = true;
-            clonedElement.playsInline = true;
-        }
-        if (clonedElement) {
-            mediaModalContentContainer.appendChild(clonedElement);
-            mediaModal.style.display = "flex";
+        if (mediaModalContentContainer && mediaModal) {
+            mediaModalContentContainer.innerHTML = "";
+            let clonedElement;
+            if (element.tagName === "IMG") {
+                clonedElement = document.createElement("img");
+                clonedElement.src = element.src;
+                clonedElement.alt = element.alt || "Tam Ekran Görsel";
+            } else if (element.tagName === "VIDEO") {
+                clonedElement = document.createElement("video");
+                clonedElement.src = element.src;
+                clonedElement.controls = true;
+                clonedElement.autoplay = true;
+                clonedElement.playsInline = true;
+            }
+            if (clonedElement) {
+                mediaModalContentContainer.appendChild(clonedElement);
+                mediaModal.style.display = "flex";
+            }
         }
     }
 
     function closeMediaModal() {
-        mediaModal.style.display = "none";
-        mediaModalContentContainer.innerHTML = "";
+        if (mediaModal) {
+            mediaModal.style.display = "none";
+            mediaModalContentContainer.innerHTML = "";
+        }
 
-        // Modal kapandığında eğer otomatik durdurulduysa akışı devam ettir
         if (autoPauseByModal && isPaused) {
             autoPauseByModal = false;
             setPausedState(false);
         }
     }
 
-    mediaModalClose.addEventListener("click", closeMediaModal);
-    mediaModal.addEventListener("click", (e) => {
-        if (e.target === mediaModal) {
-            closeMediaModal();
-        }
-    });
+    if (mediaModalClose) mediaModalClose.addEventListener("click", closeMediaModal);
+    if (mediaModal) {
+        mediaModal.addEventListener("click", (e) => {
+            if (e.target === mediaModal) closeMediaModal();
+        });
+    }
 
-    // Sohbet içerisindeki görsellere ve videolara tıklama olayı ekleme (Event Delegation)
-    chatMessages.addEventListener("click", (e) => {
-        if (e.target.tagName === "IMG" || e.target.tagName === "VIDEO") {
-            openMediaModal(e.target);
-        }
-    });
+    if (chatMessages) {
+        chatMessages.addEventListener("click", (e) => {
+            if (e.target.tagName === "IMG" || e.target.tagName === "VIDEO") {
+                openMediaModal(e.target);
+            }
+        });
+    }
 
     try {
         const response = await fetch("assets/main.json");
@@ -167,7 +173,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         let currentIndex = 0;
         const savedIndex = localStorage.getItem("ezgi_chat_index");
 
-        // 4. Eğer daha önceden kalınan bir index varsa, 0'dan o indexe kadar olanları delay'siz (instant) render et
         if (savedIndex !== null) {
             const parsed = parseInt(savedIndex, 10);
             if (!isNaN(parsed) && parsed > 0) {
@@ -178,7 +183,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         }
 
-        // 3. Sadece index kaydedilecek (chat history localStorage'da saklanmayacak)
         function saveCurrentProgress() {
             localStorage.setItem("ezgi_chat_index", currentIndex);
         }
@@ -220,7 +224,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                     });
                 }, delay);
             } else if (item.type === "end") {
-                // End bloğu gelince de index'i kaydedip ilerleyelim
                 currentIndex++;
                 saveCurrentProgress();
                 processNextItem();
@@ -228,20 +231,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         function showTypingIndicator() {
-            chatMessages.appendChild(typingIndicator);
-            typingIndicator.style.display = "flex";
-            scrollToBottom();
+            if (chatMessages && typingIndicator) {
+                chatMessages.appendChild(typingIndicator);
+                typingIndicator.style.display = "flex";
+                scrollToBottom();
+            }
         }
 
         function hideTypingIndicator() {
-            typingIndicator.style.display = "none";
+            if (typingIndicator) typingIndicator.style.display = "none";
         }
 
         function renderItem(item) {
             if (item.type === "message") {
                 const msgDiv = document.createElement("div");
                 msgDiv.className = "message incoming";
-                
                 let contentHtml = "";
                 
                 let hasMultipleMedia = (
@@ -273,13 +277,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
 
                 contentHtml += `<p>${item.text}</p>`;
-
                 msgDiv.innerHTML = contentHtml;
                 chatMessages.appendChild(msgDiv);
             } else if (item.type === "letter") {
                 const letterDiv = document.createElement("div");
                 letterDiv.className = "letter-card";
-                
                 const formattedContent = item.content ? item.content.replace(/\n\n/g, '<br><br>') : '';
                 letterDiv.innerHTML = `<p>${formattedContent}</p>`;
                 chatMessages.appendChild(letterDiv);
@@ -291,7 +293,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (item.type === "message") {
                 const msgDiv = document.createElement("div");
                 msgDiv.className = "message incoming";
-                
                 let contentHtml = "";
                 
                 let hasMultipleMedia = (
@@ -323,18 +324,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
 
                 contentHtml += `<p>${item.text}</p>`;
-
                 msgDiv.innerHTML = contentHtml;
                 chatMessages.appendChild(msgDiv);
             } else if (item.type === "letter") {
                 const letterDiv = document.createElement("div");
                 letterDiv.className = "letter-card";
-                
                 const formattedContent = item.content ? item.content.replace(/\n\n/g, '<br><br>') : '';
                 letterDiv.innerHTML = `<p>${formattedContent}</p>`;
                 chatMessages.appendChild(letterDiv);
-            } else if (item.type === "buttons") {
-                // Butonlar geçmişte kaldıysa es geçilir
             }
             scrollToBottom();
         }
@@ -353,7 +350,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                     scrollToBottom();
 
                     actionButtonsWrapper.innerHTML = "";
-
                     saveCurrentProgress();
 
                     if (btnData.action === "later") {
@@ -370,7 +366,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                             chatMessages.appendChild(systemMsg);
                             scrollToBottom();
                             
-                            currentIndex++;
+                            // Not: currentIndex artırılmıyor, dinamik sistem mesajıdır.
                             saveCurrentProgress();
 
                             localStorage.setItem("ezgi_waiting_later", "true");
@@ -413,27 +409,28 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         function scrollToBottom() {
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            if (chatMessages) {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
         }
 
         function setPausedState(paused) {
             isPaused = paused;
             if (isPaused) {
-                pauseIcon.style.display = "none";
-                playIcon.style.display = "block";
+                if (pauseIcon) pauseIcon.style.display = "none";
+                if (playIcon) playIcon.style.display = "block";
                 if (currentTimeout) {
                     clearTimeout(currentTimeout);
                 }
             } else {
-                pauseIcon.style.display = "block";
-                playIcon.style.display = "none";
+                if (pauseIcon) pauseIcon.style.display = "block";
+                if (playIcon) playIcon.style.display = "none";
                 processNextItem();
             }
         }
 
-        // Kullanıcı yukarı kaydırdığında veya aşağıda olmadığında otomatik duraklatma (Mobile touch & scroll detection)
+        // Otomatik Duraklatma (Kaydırma Durumu)
         let lastScrollTop = chatMessages.scrollTop;
-        
         chatMessages.addEventListener("scroll", () => {
             const currentScrollTop = chatMessages.scrollTop;
             const maxScrollTop = chatMessages.scrollHeight - chatMessages.clientHeight;
@@ -453,30 +450,106 @@ document.addEventListener("DOMContentLoaded", async () => {
             lastScrollTop = currentScrollTop;
         });
 
-        // Sayfa görünürlük değişimi (Ekran kapatma, sekme değiştirme, arka plana atma)
-        document.addEventListener("visibilitychange", () => {
-            if (localStorage.getItem("ezgi_waiting_later") === "true") {
+        // Uzak kalma süresi kaydetme fonksiyonu
+        function recordLeaveTime() {
+            if (localStorage.getItem("ezgi_waiting_later") === "true" || localStorage.getItem("ezgi_away_paused") === "true") {
                 return;
             }
+            localStorage.setItem("ezgi_leave_time", Date.now());
+        }
 
+        // UZAK KALMA AKIŞI TETİKLEYİCİSİ
+        function triggerAwayFlow() {
+            isPaused = true;
+            if (currentTimeout) clearTimeout(currentTimeout);
+
+            showTypingIndicator();
+            setTimeout(() => {
+                hideTypingIndicator();
+                const systemMsg = document.createElement("div");
+                systemMsg.className = "message incoming";
+                systemMsg.textContent = "Sanırım bir işin çıktı. Sorun değil ben burada bekliyorum, geldiğinde haber vermen yeterli.";
+                chatMessages.appendChild(systemMsg);
+                scrollToBottom();
+
+                renderResumeAwayButton(() => {
+                    localStorage.removeItem("ezgi_away_paused");
+                    localStorage.removeItem("ezgi_leave_time");
+                    isPaused = false;
+                    processNextItem();
+                });
+            }, 1200);
+        }
+
+        // Tab Görünürlüğü Değiştiğinde
+        document.addEventListener("visibilitychange", () => {
             if (document.hidden) {
+                recordLeaveTime();
                 if (!isMusicManuallyStopped) {
                     backgroundAudio.pause();
                 }
-                if (!isPaused) {
-                    autoPauseByVisibility = true;
-                    setPausedState(true);
-                }
+                
+                // Tab gizlendiğinde akışı donduralım ama isPaused bayrağını uzaktayım kontrollerini engellemeyecek şekilde yönetelim
+                if (currentTimeout) clearTimeout(currentTimeout);
+                autoPauseByVisibility = true;
+
             } else {
                 if (!isMusicManuallyStopped) {
                     backgroundAudio.play().catch(e => console.log("Müzik devam ettirme hatası:", e));
                 }
-                if (autoPauseByVisibility && isPaused) {
+
+                // Sekmeye GERİ DÖNÜLDÜĞÜNDE süre kontrolü:
+                const leaveTime = localStorage.getItem("ezgi_leave_time");
+                if (leaveTime && localStorage.getItem("ezgi_away_paused") !== "true") {
+                    const elapsed = Date.now() - parseInt(leaveTime, 10);
+                    
+                    if (elapsed >= AWAY_TIMEOUT_MS) {
+                        localStorage.removeItem("ezgi_leave_time");
+                        localStorage.setItem("ezgi_away_paused", "true");
+                        triggerAwayFlow();
+                        return;
+                    }
+                }
+
+                if (autoPauseByVisibility && !localStorage.getItem("ezgi_away_paused")) {
                     autoPauseByVisibility = false;
-                    setPausedState(false);
+                    if (!isPaused) {
+                        processNextItem();
+                    }
                 }
             }
         });
+
+        window.addEventListener("beforeunload", recordLeaveTime);
+        window.addEventListener("pagehide", recordLeaveTime);
+
+        // Kullanıcı aktifken her 5 saniyede bir leave_time güncellenir
+        setInterval(() => {
+            if (!document.hidden && localStorage.getItem("ezgi_waiting_later") !== "true" && localStorage.getItem("ezgi_away_paused") !== "true") {
+                localStorage.setItem("ezgi_leave_time", Date.now());
+            }
+        }, 5000);
+
+        function renderResumeAwayButton(onResume) {
+            actionButtonsWrapper.innerHTML = "";
+            const btn = document.createElement("button");
+            btn.className = "action-btn";
+            btn.textContent = "Geldim geldim, devam edebilirsin";
+            btn.addEventListener("click", () => {
+                const userMsg = document.createElement("div");
+                userMsg.className = "message outgoing";
+                userMsg.textContent = "Geldim geldim, devam edebilirsin";
+                chatMessages.appendChild(userMsg);
+                scrollToBottom();
+
+                actionButtonsWrapper.innerHTML = "";
+                saveCurrentProgress();
+
+                if (onResume) onResume();
+            });
+            actionButtonsWrapper.appendChild(btn);
+            scrollToBottom();
+        }
 
         // Duraklat / Devam Et buton işlevi
         pauseResumeBtn.addEventListener("click", () => {
@@ -496,11 +569,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
 
-        // 5. Reset butonuna basıldığında index silinir, chat-messages temizlenir ve sayfa yenilenir (veya baştan başlar)
+        // Reset Butonu
         resetBtn.addEventListener("click", () => {
             if (confirm("Sohbeti baştan başlatmak istediğine emin misin?")) {
                 localStorage.removeItem("ezgi_chat_index");
                 localStorage.removeItem("ezgi_waiting_later");
+                localStorage.removeItem("ezgi_away_paused");
+                localStorage.removeItem("ezgi_leave_time");
                 localStorage.removeItem("ezgi_chat_ended");
                 chatMessages.innerHTML = "";
                 actionButtonsWrapper.innerHTML = "";
@@ -508,8 +583,24 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
 
-        // Sayfa açıldığında "Daha sonra geleceğim" kontrolü veya akışı başlatma
+        // Sayfa açılışında durum kontrolleri
         const isWaitingLater = localStorage.getItem("ezgi_waiting_later");
+        const isAwayPaused = localStorage.getItem("ezgi_away_paused");
+
+        let triggeredAwayOnLoad = false;
+        if (isWaitingLater !== "true" && isAwayPaused !== "true") {
+            const leaveTime = localStorage.getItem("ezgi_leave_time");
+            if (leaveTime) {
+                const elapsed = Date.now() - parseInt(leaveTime, 10);
+                localStorage.removeItem("ezgi_leave_time");
+
+                if (elapsed >= AWAY_TIMEOUT_MS) {
+                    triggeredAwayOnLoad = true;
+                    localStorage.setItem("ezgi_away_paused", "true");
+                }
+            }
+        }
+
         if (isWaitingLater === "true") {
             isPaused = true;
             renderResumeLaterButton(() => {
@@ -517,6 +608,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 isPaused = false;
                 processNextItem();
             });
+        } else if (isAwayPaused === "true" || triggeredAwayOnLoad) {
+            triggerAwayFlow();
         } else {
             processNextItem();
         }
