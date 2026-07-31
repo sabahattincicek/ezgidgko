@@ -14,10 +14,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     let currentTimeout = null;
 
     // Test modu için hızlı süre ayarı (true iken delay ve duration'lar 500ms olur)
-    const TEST_MODE = false;
+    const TEST_MODE = true;
 
     // Uzun süre uzak kalma eşiği (ms cinsinden. Örn: 5 saniye = 5000)
-    const AWAY_TIMEOUT_MS = 1000*60;
+    const AWAY_TIMEOUT_MS = 5000;
 
     // Arka Plan Müzik Sistemi
     const musicFiles = [
@@ -545,7 +545,18 @@ document.addEventListener("DOMContentLoaded", async () => {
                 actionButtonsWrapper.innerHTML = "";
                 saveCurrentProgress();
 
-                if (onResume) onResume();
+                // Yazıyor animasyonunu göster ve yanıt ver
+                showTypingIndicator();
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    const replyMsg = document.createElement("div");
+                    replyMsg.className = "message incoming";
+                    replyMsg.textContent = "Hos geldin tekrardan. ben devam ediyorum o zaman";
+                    chatMessages.appendChild(replyMsg);
+                    scrollToBottom();
+
+                    if (onResume) onResume();
+                }, 1000);
             });
             actionButtonsWrapper.appendChild(btn);
             scrollToBottom();
