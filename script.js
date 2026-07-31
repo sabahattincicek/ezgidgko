@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let currentTimeout = null;
 
     // Test modu için hızlı süre ayarı (true iken delay ve duration'lar 500ms olur)
-    const TEST_MODE = false;
+    const TEST_MODE = true;
 
     // Arka Plan Müzik Sistemi
     const musicFiles = [
@@ -133,54 +133,23 @@ document.addEventListener("DOMContentLoaded", async () => {
         const response = await fetch("assets/main.json");
         const items = await response.json();
         
-        // localStorage'dan kalınan index'i, bitiş durumunu ve kullanıcı seçimlerini/mesajlarını yükle
         let currentIndex = 0;
         const savedIndex = localStorage.getItem("ezgi_chat_index");
-        const savedHistory = localStorage.getItem("ezgi_chat_history");
-        const chatEnded = localStorage.getItem("ezgi_chat_ended");
 
-        if (chatEnded === "true") {
-            // Eğer daha önceden bitmişse (storage'da end yazıyorsa), geçmişi doğrudan bas ve baştan başlatma
-            if (savedHistory !== null) {
-                chatMessages.innerHTML = savedHistory;
-            } else if (savedIndex !== null) {
-                const parsed = parseInt(savedIndex, 10);
-                if (!isNaN(parsed)) {
-                    for (let i = 0; i < parsed && i < items.length; i++) {
-                        renderItemInstant(items[i]);
-                    }
-                }
-            }
-            // Butonları gizle / etkisizleştir
-            actionButtonsWrapper.innerHTML = "";
-            return;
-        }
-
-        if (savedHistory !== null) {
-            chatMessages.innerHTML = savedHistory;
-        }
-
+        // 4. Eğer daha önceden kalınan bir index varsa, 0'dan o indexe kadar olanları delay'siz (instant) render et
         if (savedIndex !== null) {
             const parsed = parseInt(savedIndex, 10);
-            if (!isNaN(parsed) && parsed >= 0 && parsed < items.length) {
-                currentIndex = parsed;
-                // Eğer daha önceden kayıtlı history yoksa ve index ilerideyse fallback olarak instant render yapalım
-                if (savedHistory === null) {
-                    for (let i = 0; i < currentIndex; i++) {
-                        renderItemInstant(items[i]);
-                    }
+            if (!isNaN(parsed) && parsed > 0) {
+                currentIndex = Math.min(parsed, items.length);
+                for (let i = 0; i < currentIndex; i++) {
+                    renderItemInstant(items[i]);
                 }
             }
         }
 
+        // 3. Sadece index kaydedilecek (chat history localStorage'da saklanmayacak)
         function saveCurrentProgress() {
             localStorage.setItem("ezgi_chat_index", currentIndex);
-            localStorage.setItem("ezgi_chat_history", chatMessages.innerHTML);
-            
-            // Eğer şu anki item 'end' tipindeyse veya items[currentIndex] end ise end bayrağını kaydet
-            if (currentIndex < items.length && items[currentIndex].type === "end") {
-                localStorage.setItem("ezgi_chat_ended", "true");
-            }
         }
 
         function processNextItem() {
@@ -219,6 +188,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                         processNextItem();
                     });
                 }, delay);
+            } else if (item.type === "end") {
+                // End bloğu gelince de index'i kaydedip ilerleyelim
+                currentIndex++;
+                saveCurrentProgress();
+                processNextItem();
             }
         }
 
@@ -349,11 +323,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                     actionButtonsWrapper.innerHTML = "";
 
-                    // Kullanıcının bastığı butonu ve giden mesajı da localStorage'a kaydet
                     saveCurrentProgress();
 
                     if (btnData.action === "later") {
-                        // Süreci durdur ve üç nokta göstererek mesaj ekle
                         isPaused = true;
                         if (currentTimeout) clearTimeout(currentTimeout);
                         
@@ -367,15 +339,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                             chatMessages.appendChild(systemMsg);
                             scrollToBottom();
                             
-                            // currentIndex'i bir sonraki adıma (butonlar öğesinden sonraki öğeye) taşıyalım ki
-                            // geri gelip "Geldim, devam edebilirsin" denildiğinde eski butonlar tekrar gösterilmesin!
                             currentIndex++;
                             saveCurrentProgress();
 
-                            // "Geldim, devam edebilirsin" butonunu göster ve bunu da localStorage'a kalıcı olarak kaydet
                             localStorage.setItem("ezgi_waiting_later", "true");
                             renderResumeLaterButton(() => {
-                                // Devam et butonuna basıldığında
                                 localStorage.removeItem("ezgi_waiting_later");
                                 isPaused = false;
                                 processNextItem();
@@ -440,14 +408,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             const maxScrollTop = chatMessages.scrollHeight - chatMessages.clientHeight;
             const isAtBottom = maxScrollTop - currentScrollTop <= 20;
 
-            // Yukarı doğru kaydırıyorsa ve en altta değilse
             if (currentScrollTop < lastScrollTop && !isAtBottom) {
                 if (!isPaused) {
                     autoPauseByScroll = true;
                     setPausedState(true);
                 }
             } 
-            // Eğer kullanıcı tekrar en alta geldiyse ve bu otomatik durdurulduysa, devam ettir
             else if (isAtBottom && autoPauseByScroll && isPaused) {
                 autoPauseByScroll = false;
                 setPausedState(false);
@@ -458,19 +424,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Sayfa görünürlük değişimi (Ekran kapatma, sekme değiştirme, arka plana atma)
         document.addEventListener("visibilitychange", () => {
-            // Eğer "Daha sonra geleceğim" modundaysak veya sohbet bitmişse bu otomatik mantık karışmasın
-            if (localStorage.getItem("ezgi_waiting_later") === "true" || localStorage.getItem("ezgi_chat_ended") === "true") {
+            if (localStorage.getItem("ezgi_waiting_later") === "true") {
                 return;
             }
 
             if (document.hidden) {
-                // Sayfa arka plana geçti veya ekran kapatıldı
+                if (!isMusicManuallyStopped) {
+                    backgroundAudio.pause();
+                }
                 if (!isPaused) {
                     autoPauseByVisibility = true;
                     setPausedState(true);
                 }
             } else {
-                // Sayfa tekrar ekrana geldi / ön plana alındı
+                if (!isMusicManuallyStopped) {
+                    backgroundAudio.play().catch(e => console.log("Müzik devam ettirme hatası:", e));
+                }
                 if (autoPauseByVisibility && isPaused) {
                     autoPauseByVisibility = false;
                     setPausedState(false);
@@ -478,16 +447,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
 
-        // Duraklat / Devam Et buton işlevi (Sadece bu fiziksel butona basıldığında müzik de durur/devam eder)
+        // Duraklat / Devam Et buton işlevi
         pauseResumeBtn.addEventListener("click", () => {
-            autoPauseByScroll = false; // Manuel müdahale
-            autoPauseByVisibility = false; // Manuel müdahale
-            autoPauseByModal = false; // Manuel müdahale
+            autoPauseByScroll = false;
+            autoPauseByVisibility = false;
+            autoPauseByModal = false;
             
             const willBePaused = !isPaused;
             setPausedState(willBePaused);
 
-            // Müzik kontrolü: Sadece bu fiziksel butona basıldığında müzik durur veya devam eder
             if (willBePaused) {
                 backgroundAudio.pause();
                 isMusicManuallyStopped = true;
@@ -497,18 +465,19 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
 
-        // Baştan Başlat Butonu
+        // 5. Reset butonuna basıldığında index silinir, chat-messages temizlenir ve sayfa yenilenir (veya baştan başlar)
         resetBtn.addEventListener("click", () => {
             if (confirm("Sohbeti baştan başlatmak istediğine emin misin?")) {
                 localStorage.removeItem("ezgi_chat_index");
-                localStorage.removeItem("ezgi_chat_history");
                 localStorage.removeItem("ezgi_waiting_later");
                 localStorage.removeItem("ezgi_chat_ended");
+                chatMessages.innerHTML = "";
+                actionButtonsWrapper.innerHTML = "";
                 location.reload();
             }
         });
 
-        // Sayfa açıldığında daha önceden "Daha sonra geleceğim" denilip denilmediğini kontrol et
+        // Sayfa açıldığında "Daha sonra geleceğim" kontrolü veya akışı başlatma
         const isWaitingLater = localStorage.getItem("ezgi_waiting_later");
         if (isWaitingLater === "true") {
             isPaused = true;
